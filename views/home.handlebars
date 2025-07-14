@@ -1,0 +1,10 @@
+<h1>Lista de Posts</h1>
+
+{{#each posts}}
+<small>{{createdAt}}</small> <!-- exibe a data que o post foi criado -->
+<h1>{{titulo}}</h1>
+<p>{{conteudo}}</p>
+<a href="/deleta/{{id}}"><button>Deletar</button></a> <!-- o link vai apontar para a rota deletar -->
+<!-- o id é o número de cada post, estava como deletar o link -->
+<hr>
+{{/each}}

@@ -1,0 +1,140 @@
+*{
+    box-sizing: border-box;
+    margin:0;
+    padding:0;
+}
+
+/* Estilos padrão para telas maiores */
+body {
+    font-size: 18px;
+}
+
+/* Estilos para telas menores que 768px (tablets e smartphones) */
+@media (max-width: 768px) {
+    body {
+        font-size: 16px;
+    }
+    .container {
+        flex-direction: column; /* Exemplo de mudança de layout */
+    }
+}
+
+/* Estilos para telas menores que 480px (smartphones) */
+@media (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
+    h1 {
+        font-size: 24px;
+    }
+}
+
+body{
+    background-color: #FFFFFF;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.container{
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: center;
+    margin-top: 65px;
+}
+
+.id input{
+    background-color: #1e1c2e;
+    border-radius: 15px;
+    border:none;
+    color:#b6b6b6;
+    height:40px;
+    margin-top:15px;
+    padding-left: 15px;
+    width:250px;
+}
+
+.sala input{
+    background-color: #1e1c2e;
+    border-radius: 15px;
+    border:none;
+    color:#b6b6b6;
+    height:40px;
+    margin-top:10px;
+    padding-left: 15px;
+    width:250px;
+}
+
+.codigo input{
+    background-color: #1e1c2e;
+    border-radius: 15px;
+    border:none;
+    color:#b6b6b6;
+    height:40px;
+    margin-top:10px;
+    padding-left: 15px;
+    width:250px;
+}
+
+.apelido input{
+    background-color: #1e1c2e;
+    border-radius: 15px;
+    border:none;
+    color:#b6b6b6;
+    height:40px;    
+    margin-top:10px;
+    padding-left: 15px;
+    width:250px;
+}
+
+.caixa p{
+    color:#092d48;
+}
+
+h2{
+    color:#0c426f;
+    margin-left:5px;
+}
+
+p{
+    color:#092d48;
+    margin-left:5px;
+}
+
+.botao input{
+    background-color: #1ba643;
+    border:none;
+    border-radius:120px;
+    color:#141414;
+    cursor:pointer;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    margin-top: 10px;
+    height:40px;
+    width:120px;
+}
+
+input::placeholder{
+    color:#b6b6b6;
+}
+
+.deletar input{
+    background-color: #1ba643;
+    border:none;
+    /* border-radius:120px; */
+    color:#141414;
+    cursor:pointer;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    margin-left: 5px;
+    margin-top: 10px;
+    height:40px;
+    width:120px;
+}
+
+hr{
+    margin-top: 10px;
+}
+
+
+

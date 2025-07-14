@@ -1,0 +1,13 @@
+<h2>Lista de Salas</h2>
+
+{{#each salas}}
+<small>{{createdAt}}</small> <!-- exibe a data que o post foi criado -->
+{{!-- <h1>{{id}}</h1> --}}
+<p>{{nome}}</p>
+<p>{{apelido}}</p>
+<div class="deletar">
+<a href="/deletar/{{id}}"><input type="submit" value="Deletar"></a> 
+<!-- o link vai apontar para a rota deletar, o id é o número de cada post -->
+</div>
+<hr>
+{{/each}}
