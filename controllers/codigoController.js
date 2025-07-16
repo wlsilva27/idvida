@@ -6,19 +6,27 @@ const Codigo = require('../models/Codigo'); // Importa o modelo Sala
 async function criarCodigo(req, res) {
   try {
     // Você não precisa fornecer o ID; o Sequelize/MySQL vai gerá-lo automaticamente
-    const { id, codigo } = req.body;
+    const { sala_id, codigo } = req.body;
 
     if (!codigo) {
       return res.status(400).json({ message: 'O campo "codigo" é obrigatório.' });
     }
     
-    const novoCodigo = await Codigo.create({
-      id,    // Usa o 'id' vindo do req.body
+    const result = await Codigo.findAndCountAll({
+      where: { sala_id: sala_id }
+    })
+
+    if(result.count <4){
+      const novoCodigo = await Codigo.create({
+      sala_id,    // Usa o 'id' vindo do req.body
       codigo  // Usa o 'codigo' vindo do req.body
-    });
+    })
+    }else{
+      return res.status(400).json({ message: 'Número de códigos excedido.' });
+    }
 
     console.log('Sala salva com sucesso:', novoCodigo.toJSON());
-    res.status(201).json(novoCodigo); // Retorna o objeto salvo com o ID gerado
+    return res.status(400).json({ message: result });
   } catch (error) {
     console.error('Erro ao salvar sala no MySQL:', error);
     res.status(500).json({ message: 'Erro ao criar sala', error: error.message });

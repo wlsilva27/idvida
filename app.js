@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const Sala = require('./models/Sala')
 const Codigo = require('./models/Codigo')
 
+
 // importar modulo mysql
 const mysql = require('mysql2')
 const app = express() // executar a função
@@ -13,8 +14,8 @@ const app = express() // executar a função
 // Configuração de conexão 
 const conexao = mysql.createConnection({ //função de conectar ao banco de dados MySQL
     host: 'localhost',
-    user: 'root',
-    password: 'itlean',
+    user: 'admin',
+    password: 'admin',
     database: 'gestao_sala'
 })
 
@@ -45,6 +46,12 @@ app.set('views', path.join(__dirname, 'views')) // onde estão os arquivos .hbs
 //Rota para o arquivo lista.handlebars
 app.get('/salas', function (req, res) {
     Sala.findAll().then(function (salas) {
+        res.render('salas', { salas: salas })
+    })
+})
+
+app.get('/buscasalas', function (req, res) {
+    Sala.findOne().then(function (salas) {
         res.render('salas', { salas: salas })
     })
 })
@@ -80,12 +87,18 @@ app.post('/sala', function (req, res) {
 })
 
 // Rota para enviar os dados do arquivo salacodigo.js
-app.post('/codigo', function (req, res) {
+app.post('/codigo', async function (req, res) {
+    const result = await Codigo.findAndCountAll({
+      where: { sala_id:req.body.sala_id }
+    })
+    if (result.count > 4){
+        res.send("Número de códigos excedido")
+    }
     Codigo.create({
-        id: req.body.id,
+        sala_id: req.body.sala_id,
         codigo: req.body.codigo
     }).then(function () {
-        res.redirect('/codigos') // nova página         
+        res.send(result)         
     }).catch(function (erro) {
         res.send("Não foi cadastrado: " + erro)
     })
@@ -107,13 +120,51 @@ const salaCodigo = require('./controllers/codigoController');
 
 app.use(express.json())
 
-app.post('/sala', salaController.criarSala)
-app.post('/codigo', salaCodigo.criarCodigo)
+
 
 // Exemplo de rota para listar todas as salas (se você tivesse uma função getSalas no controller)
 app.get('/salas', salaController.getTodasSalas)
 app.get('/codigo', salaCodigo.getTodasSalas)
 
+//Rota para verificar o código e a sala e realizar a validação
+app.post('/verificar', async (req, res) => {
+  const { nome, codigo } = req.body;
+  
+  try {
+    const sala = await Sala.findOne({
+      where: { nome: nome }
+    });
+    
+    if (sala) {
+        const result = await Codigo.findAndCountAll({
+      where: { sala_id: sala.id }
+    })
+      if (result.count <4) {
+        return res.status(200).json({ 
+          sucesso: true, 
+          id: sala.id,
+          dados: result.count 
+        });
+      } else {
+          return res.status(400).json({ 
+          sucesso: false, 
+          mensagem: 'Número de códigos excedido.',
+          dados: result.count
+        });
+    }
+    } else {
+      return res.status(404).json({ 
+        sucesso: false, 
+        mensagem: 'Sala não encontrada' 
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      sucesso: false,
+      erro: error.message
+    });
+  }
+});
 
 app.listen(8080, () => {
     console.log("Servidor rodando na porta 8080: http://localhost:8080")
